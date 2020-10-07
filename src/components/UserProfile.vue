@@ -6,6 +6,17 @@
       <div class="user-profile__follower-count">
         <strong>Followers: </strong> {{ followers }}
       </div>
+      <form
+        class="user-profile__create-tweet"
+        @submit.prevent="createNewTweet"
+        :class="{ '--exceeded': newTweetCharacterCount > 180 }"
+      >
+        <label for="newTweet"
+          ><strong>New Tweet</strong> ({{ newTweetCharacterCount }}/180)</label
+        >
+        <textarea id="newTweet" rows="4" v-model="newTweetContent" />
+        <button>Tweet!</button>
+      </form>
     </div>
     <div class="user-profile__tweets-wrapper">
       <TweetItem
@@ -27,6 +38,7 @@ export default {
   components: { TweetItem },
   data() {
     return {
+      newTweetContent: "",
       followers: 0,
       user: {
         id: 1,
@@ -50,6 +62,9 @@ export default {
     },
   },
   computed: {
+    newTweetCharacterCount() {
+      return this.newTweetContent.length;
+    },
     fullName() {
       return `${this.user.firstName} ${this.user.lastName}`;
     },
@@ -61,6 +76,16 @@ export default {
     toggleFavourite(id) {
       console.log(`Favourited tweet #${id}`);
     },
+    createNewTweet() {
+      if (this.newTweetContent) {
+        this.user.tweets.unshift({
+          id: this.user.tweets.length + 1,
+          content: this.newTweetContent,
+          // TODO: send to API
+        });
+        this.newTweetContent = "";
+      }
+    },
   },
   mounted() {
     this.followUser();
@@ -68,38 +93,52 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .user-profile {
   display: grid;
   grid-template-columns: 1fr 3fr;
   grid-gap: 50px;
   padding: 50px 5%;
-}
 
-.user-profile__user-panel {
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  background-color: white;
-  border-radius: 5px;
-  border: 1px solid #dfe3e8;
-}
+  .user-profile__user-panel {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid #dfe3e8;
 
-.user-profile__admin-badge {
-  background: rebeccapurple;
-  color: white;
-  border-radius: 5px;
-  margin-right: auto;
-  padding: 0 10px;
-  font-weight: bold;
-}
+    h1 {
+      margin: 0;
+    }
 
-h1 {
-  margin: 0;
-}
+    .user-profile__admin-badge {
+      background: rebeccapurple;
+      color: white;
+      border-radius: 5px;
+      margin-right: auto;
+      padding: 0 10px;
+      font-weight: bold;
+    }
 
-.user-profile__tweets-wrapper {
-  display: grid;
-  grid-gap: 10px;
+    .user-profile__create-tweet {
+      display: flex;
+      flex-direction: column;
+
+      &.--exceeded {
+        color: red;
+        border-color: red;
+        // button {
+        //   background-color: #dddddd;
+        //   border: 2px solid red;
+        // }
+      }
+    }
+  }
+
+  .user-profile__tweets-wrapper {
+    display: grid;
+    grid-gap: 10px;
+  }
 }
 </style>

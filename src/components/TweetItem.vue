@@ -25,12 +25,13 @@ export default {
   methods: {
     favouriteTweet(id) {
       this.$emit("favourite", id);
+      //TODO: say to the API: I like/unlike this tweet (change the function later))
     },
   },
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .tweet-item {
   padding: 20px;
   background-color: white;
@@ -39,13 +40,13 @@ export default {
   box-sizing: border-box;
   cursor: pointer;
   transition: all 0.25s ease;
-}
 
-.tweet-item:hover {
-  transform: scale(1.1, 1.1);
-}
+  .tweet-item__user {
+    font-weight: bold;
+  }
 
-.tweet-item__user {
-  font-weight: bold;
+  &:hover {
+    transform: scale(1.1, 1.1);
+  }
 }
 </style>
