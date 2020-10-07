@@ -113,7 +113,7 @@ export default {
     }
 
     .user-profile__admin-badge {
-      background: rebeccapurple;
+      background: #693250;
       color: white;
       border-radius: 5px;
       margin-right: auto;
