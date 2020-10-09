@@ -5,7 +5,7 @@
         <h1 class="user-profile__username">@{{ user.username }}</h1>
         <div class="user-profile__admin-badge" v-if="user.isAdmin">Admin</div>
         <div class="user-profile__follower-count">
-          <strong>Followers: </strong> {{ followers }}
+          <strong>Favorites: </strong> {{ favorites }}
         </div>
       </div>
       <CreateTweetPanel @add-tweet="addTweet" />
@@ -31,7 +31,7 @@ export default {
   components: { CreateTweetPanel, TweetItem },
   data() {
     return {
-      followers: 0,
+      favorites: 0,
       user: {
         id: 1,
         username: "_SebastianStrus",
@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     followUser() {
-      this.followers++;
+      this.favorites++;
     },
     toggleFavourite(id) {
       console.log(`Favourited tweet #${id}`);
@@ -73,6 +73,7 @@ export default {
     },
   },
   mounted() {
+    this.followUser();
     this.followUser();
   },
 };
