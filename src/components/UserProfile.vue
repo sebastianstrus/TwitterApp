@@ -1,22 +1,14 @@
 <template>
   <div class="user-profile">
-    <div class="user-profile__user-panel">
-      <h1 class="user-profile__username">@{{ user.username }}</h1>
-      <div class="user-profile__admin-badge" v-if="user.isAdmin">Admin</div>
-      <div class="user-profile__follower-count">
-        <strong>Followers: </strong> {{ followers }}
+    <div class="user-profile__sidebar">
+      <div class="user-profile__user-panel">
+        <h1 class="user-profile__username">@{{ user.username }}</h1>
+        <div class="user-profile__admin-badge" v-if="user.isAdmin">Admin</div>
+        <div class="user-profile__follower-count">
+          <strong>Followers: </strong> {{ followers }}
+        </div>
       </div>
-      <form
-        class="user-profile__create-tweet"
-        @submit.prevent="createNewTweet"
-        :class="{ '--exceeded': newTweetCharacterCount > 180 }"
-      >
-        <label for="newTweet"
-          ><strong>New Tweet</strong> ({{ newTweetCharacterCount }}/180)</label
-        >
-        <textarea id="newTweet" rows="4" v-model="newTweetContent" />
-        <button>Tweet!</button>
-      </form>
+      <CreateTweetPanel @add-tweet="addTweet" />
     </div>
     <div class="user-profile__tweets-wrapper">
       <TweetItem
@@ -32,13 +24,13 @@
 
 <script>
 import TweetItem from "./TweetItem";
+import CreateTweetPanel from "./CreateTweetPanel";
 
 export default {
   name: "UserProfile",
-  components: { TweetItem },
+  components: { CreateTweetPanel, TweetItem },
   data() {
     return {
-      newTweetContent: "",
       followers: 0,
       user: {
         id: 1,
@@ -49,7 +41,7 @@ export default {
         isAdmin: true,
         tweets: [
           { id: 1, content: "TwitterApp is cool!" },
-          { id: 2, content: "Don't forget to subscribe!" },
+          { id: 2, content: "Let's do this lab!" },
         ],
       },
     };
@@ -62,9 +54,6 @@ export default {
     },
   },
   computed: {
-    newTweetCharacterCount() {
-      return this.newTweetContent.length;
-    },
     fullName() {
       return `${this.user.firstName} ${this.user.lastName}`;
     },
@@ -76,15 +65,11 @@ export default {
     toggleFavourite(id) {
       console.log(`Favourited tweet #${id}`);
     },
-    createNewTweet() {
-      if (this.newTweetContent) {
-        this.user.tweets.unshift({
-          id: this.user.tweets.length + 1,
-          content: this.newTweetContent,
-          // TODO: send to API
-        });
-        this.newTweetContent = "";
-      }
+    addTweet(tweet) {
+      this.user.tweets.unshift({
+        id: this.user.tweets.length + 1,
+        content: tweet,
+      });
     },
   },
   mounted() {
@@ -107,6 +92,7 @@ export default {
     background-color: white;
     border-radius: 5px;
     border: 1px solid #dfe3e8;
+    margin-bottom: auto;
 
     h1 {
       margin: 0;
@@ -120,25 +106,12 @@ export default {
       padding: 0 10px;
       font-weight: bold;
     }
-
-    .user-profile__create-tweet {
-      display: flex;
-      flex-direction: column;
-
-      &.--exceeded {
-        color: red;
-        border-color: red;
-        // button {
-        //   background-color: #dddddd;
-        //   border: 2px solid red;
-        // }
-      }
-    }
   }
 
   .user-profile__tweets-wrapper {
     display: grid;
     grid-gap: 10px;
+    margin-bottom: auto;
   }
 }
 </style>
