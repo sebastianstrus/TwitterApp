@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     createNewTweet() {
-      if (this.newTweetContent) {
+      if (this.newTweetContent && this.newTweetCharacterCount <= 180) {
         this.$emit("add-tweet", this.newTweetContent);
         this.newTweetContent = "";
       }
@@ -56,7 +56,7 @@ export default {
 
     button {
       padding: 5px 20px;
-      margin: auto 0;
+      margin-top: 10px;
       border-radius: 5px;
       border: none;
       background-color: #693250;
@@ -70,7 +70,6 @@ export default {
     border-color: red;
 
     .create-tweet-panel__submit {
-      background-color: red;
       color: white;
     }
   }
