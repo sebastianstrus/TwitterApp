@@ -3,6 +3,7 @@
     <div class="user-profile__sidebar">
       <div class="user-profile__user-panel">
         <h1 class="user-profile__username">@{{ user.username }}</h1>
+        <h2>Ueser id: {{ user.id }}</h2>
         <div class="user-profile__admin-badge" v-if="user.isAdmin">Admin</div>
         <div class="user-profile__follower-count">
           <strong>Favorites: </strong> {{ favorites }}
@@ -23,8 +24,11 @@
 </template>
 
 <script>
-import TweetItem from "./TweetItem";
-import CreateTweetPanel from "./CreateTweetPanel";
+// import { computed } from "vue";
+// import { useRoute } from "vue-router";
+import { users } from "../assets/users";
+import TweetItem from "../components/TweetItem";
+import CreateTweetPanel from "../components/CreateTweetPanel";
 
 export default {
   name: "UserProfile",
@@ -32,18 +36,19 @@ export default {
   data() {
     return {
       favorites: 0,
-      user: {
-        id: 1,
-        username: "_SebastianStrus",
-        firstName: "Sebastian",
-        lastName: "Strus",
-        email: "sebastian.strus1@gmail.com",
-        isAdmin: true,
-        tweets: [
-          { id: 1, content: "TwitterApp is cool!" },
-          { id: 2, content: "Let's do this lab!" },
-        ],
-      },
+      user: users[this.$route.params.userId - 1],
+      // user: {
+      //   id: 1,
+      //   username: "_SebastianStrus",
+      //   firstName: "Sebastian",
+      //   lastName: "Strus",
+      //   email: "sebastian.strus1@gmail.com",
+      //   isAdmin: true,
+      //   tweets: [
+      //     { id: 1, content: "TwitterApp is cool!" },
+      //     { id: 2, content: "Let's do this lab!" },
+      //   ],
+      // },
     };
   },
   watch: {
@@ -75,6 +80,10 @@ export default {
   mounted() {
     this.followUser();
     this.followUser();
+    //this.user = users[this.$route.params.userId];
+    console.log(this.$route.params.userId);
+    console.log(this.$route.params);
+    console.log(this.$route.params);
   },
 };
 </script>
