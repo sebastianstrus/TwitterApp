@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav>
-      <router-link to="/signin">
+      <router-link to="/login">
         <div class="navigation__logo">Twitter</div>
       </router-link>
 

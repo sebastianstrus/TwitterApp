@@ -1,10 +1,10 @@
 <template>
-  <div class="signin">
-    <div class="signin-container">
-      <div class="signin-container__header">
-        <h2>Sign in</h2>
+  <div class="login">
+    <div class="login-container">
+      <div class="login-container__header">
+        <h2>Log in</h2>
       </div>
-      <div class="signin-container__form">
+      <div class="login-container__form">
         <form>
           <label for="fname">Username:</label><br />
           <input type="text" id="fname" name="fname" /><br />
@@ -13,9 +13,9 @@
           <h6>
             Don't have an account?
 
-            <router-link to="/signup"> Sign up. </router-link>
+            <router-link to="/registration"> Sign up. </router-link>
           </h6>
-          <button>Sign in</button>
+          <button>Log In</button>
         </form>
       </div>
     </div>
@@ -24,14 +24,14 @@
 
 <script>
 export default {
-  name: "signin",
+  name: "login",
 };
 </script>
 
 <style lang="scss" scoped>
-.signin {
+.login {
   padding: 50px 5%;
-  .signin-container {
+  .login-container {
     padding: 0px;
     border: 1px solid black;
     width: 300px;
@@ -47,7 +47,7 @@ export default {
       color: white;
     }
 
-    .signin-container__form {
+    .login-container__form {
       width: 200px;
       height: 100px;
       margin: auto;

@@ -1,10 +1,10 @@
 <template>
-  <div class="signup">
-    <div class="signup-container">
-      <div class="signup-container__header">
+  <div class="registration">
+    <div class="registration-container">
+      <div class="registration-container__header">
         <h2>Sign up</h2>
       </div>
-      <div class="signup-container__form">
+      <div class="registration-container__form">
         <form>
           <label for="fname">Username:</label><br />
           <input type="text" id="fname" name="fname" /><br />
@@ -13,7 +13,7 @@
           <h6>
             Already have an account?
 
-            <router-link to="/signin"> Sign in. </router-link>
+            <router-link to="/login"> Sign in. </router-link>
           </h6>
           <button>Sign up</button>
         </form>
@@ -24,14 +24,14 @@
 
 <script>
 export default {
-  name: "signup",
+  name: "registration",
 };
 </script>
 
 <style lang="scss" scoped>
-.signup {
+.registration {
   padding: 50px 5%;
-  .signup-container {
+  .registration-container {
     padding: 0px;
     border: 1px solid black;
     width: 300px;
@@ -47,7 +47,7 @@ export default {
       color: white;
     }
 
-    .signup-container__form {
+    .registration-container__form {
       width: 200px;
       height: 100px;
       margin: auto;
