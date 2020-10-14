@@ -5,11 +5,11 @@
         <h2>Sign up</h2>
       </div>
       <div class="registration-container__form">
-        <form>
+        <form @submit.prevent="signupTapped">
           <label for="fname">Username:</label><br />
-          <input type="text" id="fname" name="fname" /><br />
+          <input type="text" id="fname" name="fname" v-model="username" /><br />
           <label for="lname">Password:</label><br />
-          <input type="text" id="lname" name="lname" />
+          <input type="text" id="lname" name="lname" v-model="password" />
           <h6>
             Already have an account?
 
@@ -25,6 +25,24 @@
 <script>
 export default {
   name: "registration",
+  methods: {
+    signupTapped() {
+      this.$http
+        .post("http://localhost:1337/users", {
+          id: "u4",
+          username: "new username",
+          password: "12345678",
+          bio: "new bio",
+        })
+        .then(function (data) {
+          console.log(data);
+        });
+      // alert(
+      //   "Username is: " + this.username + " \npassword is: " + this.password
+      // );
+      //TODO: say to the API: I like/unlike this tweet (change the function later))
+    },
+  },
 };
 </script>
 

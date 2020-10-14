@@ -5,11 +5,11 @@
         <h2>Log in</h2>
       </div>
       <div class="login-container__form">
-        <form>
+        <form @submit.prevent="loginTapped">
           <label for="fname">Username:</label><br />
-          <input type="text" id="fname" name="fname" /><br />
+          <input type="text" id="fname" name="fname" v-model="username" /><br />
           <label for="lname">Password:</label><br />
-          <input type="text" id="lname" name="lname" />
+          <input type="text" id="lname" name="lname" v-model="password" />
           <h6>
             Don't have an account?
 
@@ -25,6 +25,15 @@
 <script>
 export default {
   name: "login",
+  methods: {
+    loginTapped() {
+      // alert(
+      //   "Username is: " + this.username + " \npassword is: " + this.password,
+      // );
+      this.$router.push("/");
+      //TODO: say to the API: I like/unlike this tweet (change the function later))
+    },
+  },
 };
 </script>
 

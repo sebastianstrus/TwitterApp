@@ -5,9 +5,9 @@
         <div class="navigation__logo">Twitter</div>
       </router-link>
 
-      <div class="navigation__user">
-        {{ user.username }}
-      </div>
+      <!-- <div class="navigation__user">
+        <p>{{ user.username }}</p>
+      </div> -->
     </nav>
     <router-view />
   </div>
@@ -49,7 +49,13 @@ export default {
     }
 
     .navigation__user {
+      display: inline-flex;
       font-weight: bold;
+      width: 200px;
+
+      p {
+        margin: 20px;
+      }
     }
   }
 }
