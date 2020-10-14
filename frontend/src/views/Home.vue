@@ -12,9 +12,7 @@
     </div>
     <div @click="getUsers()">Get users!</div>
 
-    <div id="app">
-      {{ info }}
-    </div>
+    <div id="app">dkkk{{ info }}</div>
   </div>
 </template>
 
@@ -27,6 +25,7 @@ export default {
   data() {
     return {
       users: users,
+      info: "moje info",
     };
   },
   methods: {
@@ -47,9 +46,10 @@ export default {
     },
   },
   mounted() {
-    axios
-      .get("https://api.coindesk.com/v1/bpi/currentprice.json")
-      .then((response) => (this.info = response));
+    //this.getUsers();
+    // axios
+    //   .get("https://api.coindesk.com/v1/bpi/currentprice.json")
+    //   .then((response) => (this.info = response));
   },
 };
 </script>
