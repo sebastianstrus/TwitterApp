@@ -2,8 +2,13 @@ package com.backend.post;
 
 import com.backend.user.User;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Post {
 
+    @Id
     private String id;
     private String postdate;
     private User user;

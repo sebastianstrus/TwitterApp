@@ -1,12 +1,19 @@
 package com.backend.user;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class User {
 
+    @Id
     private String id;
     private String username;
     private String password;
     private String bio;
 
+    //empty constructor
+    public User() {}
 
     public User(String id, String username, String password, String bio) {
         this.id = id;

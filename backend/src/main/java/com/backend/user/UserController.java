@@ -5,6 +5,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @ComponentScan({"com.backend"})
 @RestController
@@ -26,7 +27,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users/{id}")
-    public User getUser(@PathVariable String id) {
+    public Optional<User> getUser(@PathVariable String id) {
         return userService.getUser(id);
     }
 
