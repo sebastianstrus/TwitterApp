@@ -1,6 +1,7 @@
 package com.backend.post;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +19,13 @@ public class PostController {
     }
 
     @RequestMapping(value = "/posts/{id}")
-    public Post getPost(@PathVariable String id) {
+    public Optional<Post> getPost(@PathVariable String id) {
         return postService.getPost( id);
+    }
+
+    @RequestMapping(value = "/posts/user/{id}")
+    public List<Post> getPostsByUserId(@PathVariable String id) {
+        return postService.getPostsByUserId(id);
     }
 
     @RequestMapping(value = "/posts", method = RequestMethod.POST)
