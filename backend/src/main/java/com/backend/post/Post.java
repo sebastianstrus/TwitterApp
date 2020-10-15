@@ -2,43 +2,35 @@ package com.backend.post;
 
 import com.backend.user.User;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Post {
 
     @Id
-    private String id;
-    private String postdate;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    private Date postdate;
     @ManyToOne
     private User user;
-    private String details;
+    private String body;
 
     //empty constructor
     public Post() {}
 
-    public Post(String id, String postdate, User user, String details) {
-        this.id = id;
+    public Post(Date postdate, User user, String body) {
         this.postdate = postdate;
         this.user = user;
-        this.details = details;
+        this.body = body;
     }
 
-    public String getId() {
-        return id;
-    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getPostdate() {
+    public Date getPostdate() {
         return postdate;
     }
 
-    public void setPostdate(String postdate) {
+    public void setPostdate(Date postdate) {
         this.postdate = postdate;
     }
 
@@ -50,11 +42,11 @@ public class Post {
         this.user = user;
     }
 
-    public String getDetails() {
-        return details;
+    public String getBody() {
+        return body;
     }
 
-    public void setDetails(String details) {
-        this.details = details;
+    public void setBody(String body) {
+        this.body = body;
     }
 }
