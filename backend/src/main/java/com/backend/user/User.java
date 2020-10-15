@@ -1,7 +1,9 @@
 package com.backend.user;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -11,6 +13,14 @@ public class User {
     private String username;
     private String password;
     private String bio;
+    // TODO, add followings
+    /*@ManyToMany(cascade={CascadeType.ALL})
+    @JoinTable(name="Twitter_Following",
+            joinColumns={@JoinColumn(name="user_id")},
+            inverseJoinColumns={@JoinColumn(name="following_id")})
+    private Set<User> followings = new HashSet<>();
+    @ManyToMany(mappedBy="followings", cascade={CascadeType.ALL})
+    private Set<User> followers = new HashSet<>();*/
 
     //empty constructor
     public User() {}
@@ -53,4 +63,21 @@ public class User {
     public void setBio(String bio) {
         this.bio = bio;
     }
+
+    // TODO, add followings
+    /*public Set<User> getFollowings() {
+        return followings;
+    }
+
+    public void setFollowings(Set<User> followings) {
+        this.followings = followings;
+    }
+
+    public Set<User> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(Set<User> followers) {
+        this.followers = followers;
+    }*/
 }
