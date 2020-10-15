@@ -7,12 +7,13 @@
         :to="{ name: 'UserProfile', params: { userId: user.id } }"
         :key="user.id"
       >
-        {{ user.username }}
+        <h3>{{ user.username }}</h3>
       </router-link>
     </div>
     <div @click="getUsers()">Get users!</div>
 
-    <div id="app">dkkk{{ info }}</div>
+    <div id="app">{{ users }}</div>
+    <div id="app">{{ posts }}</div>
   </div>
 </template>
 
@@ -24,32 +25,31 @@ export default {
   name: "Home",
   data() {
     return {
-      users: users,
-      info: "moje info",
+      users: [],
+      posts: [],
+      errors: [],
+      errored: false,
     };
   },
   methods: {
     getUsers() {
-      alert("test");
       axios
-        .get("http://jsonplaceholder.typicode.com/posts/1")
-        .then((response) => (this.info = response));
-      // this.$http
-      //   .get("https://jsonplaceholder.typicode.com/posts")
-      //   .then(function (data) {
-      //     console.log(data);
-      //   });
-      // alert(
-      //   "Username is: " + this.username + " \npassword is: " + this.password
-      // );
-      //TODO: say to the API: I like/unlike this tweet (change the function later))
+        .get("http://localhost:1337/users/")
+        .then((response) => (this.users = response.data))
+        .catch((error) => {
+          console.log(error);
+          this.errored = true;
+        });
+    },
+    getPosts() {
+      axios
+        .get("http://localhost:1337/posts/")
+        .then((response) => (this.posts = response.data));
     },
   },
   mounted() {
-    //this.getUsers();
-    // axios
-    //   .get("https://api.coindesk.com/v1/bpi/currentprice.json")
-    //   .then((response) => (this.info = response));
+    this.getUsers();
+    this.getPosts();
   },
 };
 </script>

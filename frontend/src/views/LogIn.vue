@@ -33,6 +33,15 @@ export default {
       this.$router.push("/");
       //TODO: say to the API: I like/unlike this tweet (change the function later))
     },
+    getUsers() {
+      axios
+        .get("http://localhost:1337/users/")
+        .then((response) => (this.users = response.data))
+        .catch((error) => {
+          console.log(error);
+          this.errored = true;
+        });
+    },
   },
 };
 </script>
