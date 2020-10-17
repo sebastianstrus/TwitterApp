@@ -9,7 +9,8 @@ import java.util.Set;
 public class User {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
     private String username;
     private String password;
     private String bio;
@@ -25,18 +26,18 @@ public class User {
     //empty constructor
     public User() {}
 
-    public User(String id, String username, String password, String bio) {
+    public User(Integer id, String username, String password, String bio) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.bio = bio;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -1,7 +1,6 @@
 package com.backend.post;
 
 import com.backend.user.User;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -11,7 +10,7 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private Date postdate;
+    private Integer timestamp = (int)((new Date()).getTime() / 1000); // TODO: move to constructor?
     @ManyToOne
     private User user;
     private String body;
@@ -19,19 +18,28 @@ public class Post {
     //empty constructor
     public Post() {}
 
-    public Post(Date postdate, User user, String body) {
-        this.postdate = postdate;
+    public Post(Integer id, Integer timestamp, User user, String body) {
+        this.id = id;
+        this.timestamp = timestamp;
         this.user = user;
         this.body = body;
     }
 
 
-    public Date getPostdate() {
-        return postdate;
+    public Integer getId() {
+        return id;
     }
 
-    public void setPostdate(Date postdate) {
-        this.postdate = postdate;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Integer timestamp) {
+        this.timestamp = timestamp;
     }
 
     public User getUser() {
