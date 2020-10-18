@@ -1,19 +1,20 @@
 <template>
   <div class="home">
     <h1>Home</h1>
+    <button @click="getUsers()">Get users!</button>
     <div class="users-list">
       <router-link
         v-for="user in users"
         :to="{ name: 'UserProfile', params: { userId: user.id } }"
         :key="user.id"
       >
-        <h3>{{ user.username }}</h3>
+        <h3>{{ user.id }} {{ user.username }}</h3>
       </router-link>
     </div>
-    <div @click="getUsers()">Get users!</div>
 
-    <div id="app">{{ users }}</div>
-    <div id="app">{{ posts }}</div>
+    <div>{{ users }}</div>
+    <button @click="getPosts()">Get posts!</button>
+    <div>{{ posts }}</div>
   </div>
 </template>
 
@@ -34,7 +35,7 @@ export default {
   methods: {
     getUsers() {
       axios
-        .get("http://localhost:1337/users/")
+        .get("http://localhost:8080/users/")
         .then((response) => (this.users = response.data))
         .catch((error) => {
           console.log(error);
@@ -43,13 +44,16 @@ export default {
     },
     getPosts() {
       axios
-        .get("http://localhost:1337/posts/")
-        .then((response) => (this.posts = response.data));
+        .get("http://localhost:8080/posts/")
+        .then((response) => (this.posts = response.data))
+        .catch((error) => {
+          console.log(error);
+          this.errored = true;
+        });
     },
   },
   mounted() {
-    this.getUsers();
-    this.getPosts();
+    //this.getPosts();
   },
 };
 </script>
