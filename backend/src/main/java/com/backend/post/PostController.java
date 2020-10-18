@@ -19,12 +19,12 @@ public class PostController {
     }
 
     @RequestMapping(value = "/posts/{id}")
-    public Optional<Post> getPost(@PathVariable String id) {
-        return postService.getPost( id);
+    public Optional<Post> getPost(@PathVariable Integer id) {
+        return postService.getPost(id);
     }
 
     @RequestMapping(value = "/posts/user/{id}")
-    public List<Post> getPostsByUserId(@PathVariable String id) {
+    public List<Post> getPostsByUserId(@PathVariable Integer id) {
         return postService.getPostsByUserId(id);
     }
 
@@ -34,12 +34,12 @@ public class PostController {
     }
 
     @RequestMapping(value="/posts/{id}", method = RequestMethod.PUT)
-    public void updatePost(@PathVariable String id, @RequestBody Post post) {
+    public void updatePost(@PathVariable Integer id, @RequestBody Post post) {
         postService.updatePost(id, post);
     }
 
     @RequestMapping(value = "/posts/{id}", method = RequestMethod.DELETE)
-    public void deletePost(@PathVariable String id) {
+    public void deletePost(@PathVariable Integer id) {
         postService.deletePost(id);
     }
 }

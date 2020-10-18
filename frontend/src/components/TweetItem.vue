@@ -1,9 +1,12 @@
 <template>
   <div class="tweet-item" @click="favouriteTweet(tweet.id)">
     <div class="user-profile__tweet">
-      <div class="tweet-item__user">@{{ username }}</div>
+      <div>
+        <div class="tweet-item__username">@{{ username }}</div>
+        <div class="tweet-item__date">{{ timestamp }}</div>
+      </div>
       <div class="tweet-item__content">
-        {{ tweet.content }}
+        {{ body }}
       </div>
     </div>
   </div>
@@ -17,6 +20,14 @@ export default {
       type: String,
       required: true,
     },
+    body: {
+      type: String,
+      required: true,
+    },
+    timestamp: {
+      type: String,
+      required: true,
+    },
     tweet: {
       type: Object,
       required: true,
@@ -25,7 +36,6 @@ export default {
   methods: {
     favouriteTweet(id) {
       this.$emit("favourite", id);
-      //TODO: say to the API: I like/unlike this tweet (change the function later))
     },
   },
 };
@@ -33,6 +43,7 @@ export default {
 
 <style lang="scss" scoped>
 .tweet-item {
+  display: inline;
   padding: 20px;
   background-color: white;
   border-radius: 5px;
@@ -41,8 +52,20 @@ export default {
   cursor: pointer;
   transition: all 0.25s ease;
 
-  .tweet-item__user {
+  .tweet-item__username {
+    display: inline;
     font-weight: bold;
+  }
+
+  .tweet-item__date {
+    display: inline;
+    font-weight: bold;
+    color: #693250;
+    float: right;
+  }
+
+  .tweet-item__content {
+    display: inline;
   }
 
   &:hover {

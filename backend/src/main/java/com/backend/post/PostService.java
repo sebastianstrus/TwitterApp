@@ -21,11 +21,11 @@ public class PostService {
         return posts;
     }
 
-    public Optional<Post> getPost(String id) {
+    public Optional<Post> getPost(Integer id) {
         return postRepository.findById(id);
     }
 
-    public List<Post> getPostsByUser(String id) {
+    public List<Post> getPostsByUser(Integer id) {
         List<Post> posts = new ArrayList<>();
         postRepository.findByUserId(id)
                 .forEach(posts::add);
@@ -36,15 +36,15 @@ public class PostService {
         postRepository.save(post);
     }
 
-    public void updatePost(String id, Post post) {
+    public void updatePost(Integer id, Post post) {
         postRepository.save(post);
     }
 
-    public void deletePost(String id) {
+    public void deletePost(Integer id) {
         postRepository.deleteById(id);
     }
 
-    public List<Post> getPostsByUserId(String id) {
+    public List<Post> getPostsByUserId(Integer id) {
         return postRepository.findByUserId(id);
     }
 }

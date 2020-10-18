@@ -13,9 +13,11 @@
     </div>
     <div class="user-profile__tweets-wrapper">
       <TweetItem
-        v-for="tweet in user.tweets"
+        v-for="tweet in posts"
         :key="tweet.id"
-        :username="user.username"
+        :username="tweet.user.username"
+        :body="tweet.body"
+        :timestamp="this.toDate(tweet.timestamp)"
         :tweet="tweet"
         @favourite="toggleFavourite"
       />
@@ -37,6 +39,7 @@ export default {
     return {
       favorites: 0,
       user: users[this.$route.params.userId - 1],
+      posts: "",
       // user: {
       //   id: 1,
       //   username: "_SebastianStrus",
@@ -64,6 +67,24 @@ export default {
     },
   },
   methods: {
+    getUser() {
+      axios
+        .get("http://localhost:8080/users/1")
+        .then((response) => (this.user = response.data))
+        .catch((error) => {
+          console.log(error);
+          this.errored = true;
+        });
+    },
+    getPostsByUserId() {
+      axios
+        .get(`http://localhost:8080/posts/user/${user.id}`)
+        .then((response) => (this.posts = response.data))
+        .catch((error) => {
+          console.log(error);
+          this.errored = true;
+        });
+    },
     followUser() {
       this.favorites++;
     },
@@ -76,14 +97,32 @@ export default {
         content: tweet,
       });
     },
+    toDate(timestamp) {
+      var date = new Date(timestamp * 1000);
+      var year = date.getFullYear();
+      var tempMonth = date.getMonth() + 1;
+      var monthLength = ("" + tempMonth).length;
+      var month = monthLength < 2 ? "0" + tempMonth : tempMonth;
+      var dayLength = ("" + date.getDate()).length;
+      var day = dayLength < 2 ? "0" + date.getDate() : date.getDate();
+      var hours = date.getHours();
+      var minutes = "0" + date.getMinutes();
+      var seconds = "0" + date.getSeconds();
+      var formattedTime = `${year}-${month}-${day} ${hours}:${minutes.substr(
+        -2
+      )}:${seconds.substr(-2)}`;
+      return formattedTime;
+    },
   },
   mounted() {
-    this.followUser();
-    this.followUser();
-    //this.user = users[this.$route.params.userId];
-    console.log(this.$route.params.userId);
-    console.log(this.$route.params);
-    console.log(this.$route.params);
+    this.getPostsByUserId();
+    //this.getUser();
+    // this.followUser();
+    // this.followUser();
+    // //this.user = users[this.$route.params.userId];
+    // console.log(this.$route.params.userId);
+    // console.log(this.$route.params);
+    // console.log(this.$route.params);
   },
 };
 </script>

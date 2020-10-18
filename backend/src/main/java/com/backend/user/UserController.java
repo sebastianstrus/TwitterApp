@@ -20,13 +20,13 @@ public class UserController {
 
     }
 
-    @RequestMapping(value="/welcomee")
+    @RequestMapping(value="/welcome")
     public static String welcome() {
-        return "Welcome to Spring Boot e";
+        return "Welcome to Spring Boot";
     }
 
     @RequestMapping(value = "/users/{id}")
-    public Optional<User> getUser(@PathVariable String id) {
+    public Optional<User> getUser(@PathVariable Integer id) {
         return userService.getUser(id);
     }
 
@@ -41,12 +41,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.PUT)
-    public void updateUser(@RequestBody User user, @PathVariable String id) {
+    public void updateUser(@RequestBody User user, @PathVariable Integer id) {
         userService.updateUser(id, user);
     }
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
-    public void deleteUser(@PathVariable String id) {
+    public void deleteUser(@PathVariable Integer id) {
         userService.deleteUser(id);
     }
 }
