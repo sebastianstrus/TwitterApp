@@ -34,23 +34,32 @@ export default {
   },
   methods: {
     signupTapped() {
-      alert("Let's perform request! " + this.username + " " + this.password);
-      axios
-        .post("http://localhost:8080/users", {
-          username: this.username,
-          password: this.password,
-        })
-        .then((data) => {
-          alert(data);
-        })
-        .catch((error) => {
-          alert("Something went wrong");
-          this.errored = true;
-        });
-      // alert(
-      //   "Username is: " + this.username + " \npassword is: " + this.password
-      // );
-      //TODO: say to the API: I like/unlike this tweet (change the function later))
+      if (
+        this.username &&
+        this.username != "" &&
+        this.password &&
+        this.password != ""
+      ) {
+        axios
+          .post("http://localhost:8080/users", {
+            username: this.username,
+            password: this.password,
+          })
+          .then((response) => {
+            alert(
+              "Response.data: " +
+                response.data.id +
+                " " +
+                response.data.username +
+                " " +
+                response.data.password
+            );
+          })
+          .catch((error) => {
+            alert("Something went wrong");
+            this.errored = true;
+          });
+      }
     },
   },
 };

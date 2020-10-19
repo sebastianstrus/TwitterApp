@@ -20,11 +20,6 @@ public class UserController {
 
     }
 
-    @RequestMapping(value="/welcome")
-    public static String welcome() {
-        return "Welcome to Spring Boot";
-    }
-
     @RequestMapping(value = "/users/{id}")
     public Optional<User> getUser(@PathVariable Integer id) {
         return userService.getUser(id);
@@ -36,8 +31,9 @@ public class UserController {
     }
 
     @RequestMapping(method= RequestMethod.POST, value="/users")
-    public void addUser(@RequestBody User user) {
+    public User addUser(@RequestBody User user) {
         userService.addUser(user);
+        return user;
     }
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.PUT)

@@ -15,7 +15,7 @@
 
             <router-link to="/registration"> Sign up. </router-link>
           </h6>
-          <button>Log In</button>
+          <button>Log in</button>
         </form>
       </div>
     </div>
@@ -29,7 +29,6 @@ export default {
       user: "",
       username: "",
       password: "",
-      passwordFromResponse: "",
       errors: [],
       errored: false,
     };
@@ -37,21 +36,27 @@ export default {
   name: "login",
   methods: {
     loginTapped() {
-      // TODO: Create sign in method and handle it on backend side
-      axios
-        .get(`http://localhost:8080/users/username/${this.username}`)
-        .then((response) => {
-          if (response.data[0].password == this.password) {
-            alert("Logged in!");
-          } else {
-            alert("Check your credentials!");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          alert("Check your credentials!!");
-          this.errored = true;
-        });
+      if (
+        this.username &&
+        this.username != "" &&
+        this.password &&
+        this.password != ""
+      ) {
+        axios
+          .get(`http://localhost:8080/users/username/${this.username}`)
+          .then((response) => {
+            if (response.data[0].password == this.password) {
+              alert("Logged in!");
+            } else {
+              alert("Check your credentials!");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            alert("Check your credentials!!");
+            this.errored = true;
+          });
+      }
     },
   },
 };

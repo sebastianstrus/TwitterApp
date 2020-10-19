@@ -5,9 +5,11 @@
         <div class="navigation__logo">Twitter</div>
       </router-link>
 
-      <!-- <div class="navigation__user">
-        <p>{{ user.username }}</p>
-      </div> -->
+      <ul class="navigation__lists">
+        <li class="hidden">Search</li>
+        <li class="hidden">Logout</li>
+        <li>{{ user.username }}</li>
+      </ul>
     </nav>
     <router-view />
   </div>
@@ -36,24 +38,25 @@ export default {
   background-color: #f3f5fa;
 
   nav {
-    display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 10px 5%;
     background-color: #693250;
     color: white;
+    font-weight: bold;
 
     .navigation__logo {
-      font-weight: bold;
+      display: inline-block;
       font-size: 24px;
+      width: 100px;
     }
 
-    .navigation__user {
-      display: inline-flex;
-      font-weight: bold;
-      width: 200px;
-
-      p {
+    ul {
+      margin: 10px 0;
+      float: right;
+      list-style: none;
+      li {
+        align-items: center;
+        display: inline;
         margin: 20px;
       }
     }
