@@ -16,6 +16,10 @@ export default createStore({
 
   // functions that call mutations
   actions: {
+    setUser({ commit }, user) {
+      commit('SER_USER', user);
+
+    }
 
   },
 

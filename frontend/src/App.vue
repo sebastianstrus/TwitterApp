@@ -8,7 +8,8 @@
       <ul class="navigation__lists">
         <li class="hidden">Search</li>
         <li class="hidden">Logout</li>
-        <li>{{ user.username }}</li>
+        <li v-if="user">{{ user.username }}</li>
+        <!-- <li>{{ state.user.username }}</li> -->
       </ul>
     </nav>
     <router-view />

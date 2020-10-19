@@ -4,6 +4,7 @@
       <div class="user-profile__user-panel">
         <h1 class="user-profile__username">@{{ user.username }}</h1>
         <h2>Ueser id: {{ user.id }}</h2>
+        <h3>{{ $route.params.userId }}</h3>
         <div class="user-profile__admin-badge" v-if="user.isAdmin">Admin</div>
         <div class="user-profile__follower-count">
           <strong>Favorites: </strong> {{ favorites }}
@@ -27,7 +28,7 @@
 
 <script>
 // import { computed } from "vue";
-// import { useRoute } from "vue-router";
+import { useRoute } from "vue-router";
 import { users } from "../assets/users";
 import TweetItem from "../components/TweetItem";
 import CreateTweetPanel from "../components/CreateTweetPanel";
@@ -35,67 +36,49 @@ import CreateTweetPanel from "../components/CreateTweetPanel";
 export default {
   name: "UserProfile",
   components: { CreateTweetPanel, TweetItem },
+  //beforeCreated() {},
   data() {
     return {
-      favorites: 0,
-      user: users[this.$route.params.userId - 1],
+      user: { username: "" },
       posts: "",
-      // user: {
-      //   id: 1,
-      //   username: "_SebastianStrus",
-      //   firstName: "Sebastian",
-      //   lastName: "Strus",
-      //   email: "sebastian.strus1@gmail.com",
-      //   isAdmin: true,
-      //   tweets: [
-      //     { id: 1, content: "TwitterApp is cool!" },
-      //     { id: 2, content: "Let's do this lab!" },
-      //   ],
-      // },
+      errored: false,
     };
-  },
-  watch: {
-    followers(newFollowerAccount, oldFollowerAccount) {
-      if (oldFollowerAccount < newFollowerAccount) {
-        console.log(`${this.user.username} has gained a follower!`);
-      }
-    },
-  },
-  computed: {
-    fullName() {
-      return `${this.user.firstName} ${this.user.lastName}`;
-    },
   },
   methods: {
     getUser() {
       axios
-        .get("http://localhost:8080/users/1")
-        .then((response) => (this.user = response.data))
+        .get(`http://localhost:8080/users/${this.$route.params.userId}`)
+        .then((response) => {
+          this.user = response.data;
+        })
         .catch((error) => {
+          alert(error);
           console.log(error);
           this.errored = true;
         });
     },
     getPostsByUserId() {
       axios
-        .get(`http://localhost:8080/posts/user/${user.id}`)
+        .get(`http://localhost:8080/posts/user/${this.$route.params.userId}`)
         .then((response) => (this.posts = response.data))
         .catch((error) => {
           console.log(error);
           this.errored = true;
         });
     },
-    followUser() {
-      this.favorites++;
-    },
-    toggleFavourite(id) {
-      console.log(`Favourited tweet #${id}`);
-    },
     addTweet(tweet) {
-      this.user.tweets.unshift({
-        id: this.user.tweets.length + 1,
-        content: tweet,
-      });
+      axios
+        .post(`http://localhost:8080/posts`, {
+          user: this.user,
+          body: tweet,
+        })
+        .then((response) => {
+          this.posts.unshift(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+          this.errored = true;
+        });
     },
     toDate(timestamp) {
       var date = new Date(timestamp * 1000);
@@ -115,6 +98,7 @@ export default {
     },
   },
   mounted() {
+    this.getUser();
     this.getPostsByUserId();
     //this.getUser();
     // this.followUser();
