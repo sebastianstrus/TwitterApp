@@ -25,17 +25,27 @@
 <script>
 export default {
   name: "registration",
+  data() {
+    return {
+      username: "",
+      password: "",
+      errored: false,
+    };
+  },
   methods: {
     signupTapped() {
-      this.$http
-        .post("http://localhost:1337/users", {
-          id: "u4",
-          username: "new username",
-          password: "12345678",
-          bio: "new bio",
+      alert("Let's perform request! " + this.username + " " + this.password);
+      axios
+        .post("http://localhost:8080/users", {
+          username: this.username,
+          password: this.password,
         })
-        .then(function (data) {
-          console.log(data);
+        .then((data) => {
+          alert(data);
+        })
+        .catch((error) => {
+          alert("Something went wrong");
+          this.errored = true;
         });
       // alert(
       //   "Username is: " + this.username + " \npassword is: " + this.password

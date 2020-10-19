@@ -2,7 +2,7 @@
   <div class="login">
     <div class="login-container">
       <div class="login-container__header">
-        <h2>Log in</h2>
+        <h2>Log in {{ user.username }}</h2>
       </div>
       <div class="login-container__form">
         <form @submit.prevent="loginTapped">
@@ -24,21 +24,32 @@
 
 <script>
 export default {
+  data() {
+    return {
+      user: "",
+      username: "",
+      password: "",
+      passwordFromResponse: "",
+      errors: [],
+      errored: false,
+    };
+  },
   name: "login",
   methods: {
     loginTapped() {
-      // alert(
-      //   "Username is: " + this.username + " \npassword is: " + this.password,
-      // );
-      this.$router.push("/");
-      //TODO: say to the API: I like/unlike this tweet (change the function later))
-    },
-    getUsers() {
+      // TODO: Create sign in method and handle it on backend side
       axios
-        .get("http://localhost:1337/users/")
-        .then((response) => (this.users = response.data))
+        .get(`http://localhost:8080/users/username/${this.username}`)
+        .then((response) => {
+          if (response.data[0].password == this.password) {
+            alert("Logged in!");
+          } else {
+            alert("Check your credentials!");
+          }
+        })
         .catch((error) => {
           console.log(error);
+          alert("Check your credentials!!");
           this.errored = true;
         });
     },
