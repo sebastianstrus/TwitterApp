@@ -1,6 +1,7 @@
 package com.backend.user;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +14,7 @@ public class User {
     private Integer id;
     private String username;
     private String password;
+    private ArrayList<Integer> followings = new ArrayList<>();
     private String bio;
     // TODO, add followings
     /*@ManyToMany(cascade={CascadeType.ALL})
@@ -26,10 +28,11 @@ public class User {
     //empty constructor
     public User() {}
 
-    public User(Integer id, String username, String password, String bio) {
+    public User(Integer id, String username, String password, ArrayList<Integer> followings, String bio) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.followings =  followings;
         this.bio = bio;
     }
 
@@ -55,6 +58,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public ArrayList<Integer> getFollowings() {
+        return followings;
+    }
+
+    public void setFollowings(ArrayList<Integer> followings) {
+        this.followings = followings;
     }
 
     public String getBio() {
