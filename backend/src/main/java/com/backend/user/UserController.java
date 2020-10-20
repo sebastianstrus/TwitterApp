@@ -30,10 +30,15 @@ public class UserController {
         return userService.getUsersByUsername(username);
     }
 
+    @RequestMapping(value = "/users/search/{str}")
+    public List<User> findByUsernameContainingIgnoreCase(@PathVariable String str) {
+        return userService.findByUsernameContainingIgnoreCase(str);
+    }
+
     @RequestMapping(method= RequestMethod.POST, value="/users")
-    public User addUser(@RequestBody User user) {
+    public Optional<User> addUser(@RequestBody User user) {
         userService.addUser(user);
-        return user;
+        return userService.getUser(user.getId());// TODO: update to void
     }
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.PUT)

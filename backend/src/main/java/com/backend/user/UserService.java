@@ -25,6 +25,16 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public List<User> findByUsernameContainingIgnoreCase(String str) {
+        List<User> users = new ArrayList<>();
+        userRepository.findAll().forEach( (user) -> {
+            if (user.getUsername().toLowerCase().contains(str.toLowerCase()))  {
+                users.add(user);
+            }
+        });
+        return users;
+    }
+
     public void addUser(User user) {
         userRepository.save(user);
     }

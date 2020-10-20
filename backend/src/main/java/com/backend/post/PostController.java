@@ -29,9 +29,9 @@ public class PostController {
     }
 
     @RequestMapping(value = "/posts", method = RequestMethod.POST)
-    public Post addPost(@RequestBody Post post) {
+    public Optional<Post> addPost(@RequestBody Post post) {
         postService.addPost(post);
-        return post;
+        return postService.getPost(post.getId());
     }
 
     @RequestMapping(value="/posts/{id}", method = RequestMethod.PUT)
