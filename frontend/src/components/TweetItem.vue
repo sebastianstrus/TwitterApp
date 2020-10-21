@@ -1,5 +1,5 @@
 <template>
-  <div class="tweet-item" @click="favouriteTweet(tweet.id)">
+  <div class="tweet-item">
     <div class="user-profile__tweet">
       <div>
         <div class="tweet-item__username">@{{ username }}</div>
@@ -7,6 +7,9 @@
       </div>
       <div class="tweet-item__content">
         {{ body }}
+      </div>
+      <div class="tweet-item__delete" @click="deleteTweet(tweet.id)">
+        Delete
       </div>
     </div>
   </div>
@@ -34,8 +37,8 @@ export default {
     },
   },
   methods: {
-    favouriteTweet(id) {
-      this.$emit("favourite", id);
+    deleteTweet(id) {
+      this.$emit("delete", id);
     },
   },
 };
@@ -66,6 +69,19 @@ export default {
 
   .tweet-item__content {
     display: inline;
+  }
+
+  .tweet-item__delete {
+    font-size: 12px;
+    padding: 1px;
+    font-weight: 600;
+    float: right;
+    margin: 5px;
+    border-radius: 5px;
+    background-color: #693250;
+    color: white;
+    width: 50px;
+    text-align: center;
   }
 
   &:hover {

@@ -1,13 +1,15 @@
 <template>
   <div id="app">
     <nav>
-      <router-link to="/login">
+      <router-link to="/">
         <div class="navigation__logo">Twitter</div>
       </router-link>
 
       <ul class="navigation__lists">
-        <li class="hidden">Search</li>
-        <li class="hidden">Logout</li>
+        <li class="hidden">
+          <router-link to="/search">Search</router-link>
+        </li>
+        <li class="hidden"><router-link to="/login">Logout</router-link></li>
         <li v-if="user">{{ user.username }}</li>
         <!-- <li>{{ state.user.username }}</li> -->
       </ul>

@@ -3,11 +3,16 @@
     <div class="user-profile__sidebar">
       <div class="user-profile__user-panel">
         <h1 class="user-profile__username">@{{ user.username }}</h1>
-        <h2>Ueser id: {{ user.id }}</h2>
-        <h3>{{ $route.params.userId }}</h3>
-        <div class="user-profile__admin-badge" v-if="user.isAdmin">Admin</div>
+        <!-- <h2>Ueser id: {{ user.id }}</h2>
+        <h3>{{ $route.params.userId }}</h3> -->
+        <div class="user-profile__admin-badge" v-if="isAdmin">Admin</div>
         <div class="user-profile__follower-count">
-          <strong>Favorites: </strong> {{ favorites }}
+          <strong>Following: {{ user.followings.length }}</strong>
+        </div>
+
+        <div class="user-profile__bio">
+          <strong>Bio:</strong>
+          <strong>{{ user.bio }}</strong>
         </div>
       </div>
       <CreateTweetPanel @add-tweet="addTweet" />
@@ -20,7 +25,7 @@
         :body="tweet.body"
         :timestamp="this.toDate(tweet.timestamp)"
         :tweet="tweet"
-        @favourite="toggleFavourite"
+        @delete="deleteTweet(tweet.id)"
       />
     </div>
   </div>
@@ -35,16 +40,31 @@ import CreateTweetPanel from "../components/CreateTweetPanel";
 
 export default {
   name: "UserProfile",
+
   components: { CreateTweetPanel, TweetItem },
   //beforeCreated() {},
   data() {
     return {
-      user: { username: "" },
+      isAdmin: true,
+      user: { username: "", followings: [] },
       posts: "",
       errored: false,
     };
   },
   methods: {
+    deleteTweet(id) {
+      axios
+        .delete(`http://localhost:8080/posts/${id}`)
+        .then((response) => {
+          // TODO: simplyfy
+          this.getPostsByUserId();
+        })
+        .catch((error) => {
+          alert(error);
+          console.log(error);
+          this.errored = true;
+        });
+    },
     getUser() {
       axios
         .get(`http://localhost:8080/users/${this.$route.params.userId}`)
