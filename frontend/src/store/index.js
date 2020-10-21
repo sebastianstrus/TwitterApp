@@ -2,7 +2,16 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    user: null,
+    user: {
+      "id": 1,
+      "username": "Sebastian1",
+      "password": "Password1",
+      "followings": [
+        3,
+        5
+      ],
+      "bio": "I have a bio 1"
+    },
 
   },
 
@@ -17,7 +26,7 @@ export default createStore({
   // functions that call mutations
   actions: {
     setUser({ commit }, user) {
-      commit('SER_USER', user);
+      commit('SET_USER', user);
 
     }
 
