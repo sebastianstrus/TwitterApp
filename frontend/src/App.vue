@@ -11,7 +11,6 @@
         </li>
         <li class="hidden" @click="logout">Logout</li>
         <li v-if="user">{{ user.username }}</li>
-        <!-- <li>{{ state.user.username }}</li> -->
       </ul>
     </nav>
     <router-view />
@@ -21,9 +20,11 @@
 
 
 <script>
+import { actions } from "vuex";
 import { reactive } from "vue";
 import { useStore } from "vuex";
 import { computed } from "vue";
+import { useRoute } from "vue-router";
 
 export default {
   name: "App",
@@ -32,13 +33,13 @@ export default {
     const user = computed(() => store.state.user);
     return {
       user,
+      store,
     };
   },
   methods: {
     logout() {
-      alert("test");
-      //await store.dispatch('unsetUser');
-      //router.push({ path: "/login" });
+      this.store.dispatch("setUser", null);
+      this.$router.push({ path: "/login" });
     },
   },
 };

@@ -33,6 +33,8 @@
 
 <script>
 // import { computed } from "vue";
+import store from "../store";
+import { actions } from "../store";
 import { useRoute } from "vue-router";
 import { users } from "../assets/users";
 import TweetItem from "../components/TweetItem";

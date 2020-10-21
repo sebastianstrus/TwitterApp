@@ -24,6 +24,8 @@
 
 <script>
 import store from "../store";
+import { actions } from "../store";
+import { useRoute } from "vue-router";
 export default {
   data() {
     return {
@@ -47,11 +49,11 @@ export default {
           .get(`http://localhost:8080/users/username/${this.username}`)
           .then((response) => {
             if (response.data[0].password == this.password) {
-              alert("Logged in!");
-              // const user = store.state.user;
-              // if (!user) {
-              //   await store.dispatch('setUser', response.data[0])
-              //   }
+              const user = store.state.user;
+              if (!user) {
+                store.dispatch("setUser", response.data[0]);
+                this.$router.push({ path: "/" });
+              }
             } else {
               alert("Check your credentials!");
             }
