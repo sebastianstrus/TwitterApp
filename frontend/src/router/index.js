@@ -5,12 +5,21 @@ import LogIn from '../views/LogIn.vue'
 import Registration from '../views/Registration.vue'
 import UserProfile from '../views/UserProfile.vue'
 import Search from '../views/Search.vue'
+import Followings from '../views/Followings.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home,
+    meta: {
+      requiresUser: true
+    }
+  },
+  {
+    path: '/followings',
+    name: 'followings',
+    component: Followings,
     meta: {
       requiresUser: true
     }

@@ -1,13 +1,6 @@
 <template>
-  <div class="search">
-    <h1>Find users</h1>
-    <input
-      class="search__textfield"
-      type="text"
-      placeholder="Type username..."
-      @input="getUsers()"
-      v-model="str"
-    />
+  <div class="followings">
+    <h1>Followings</h1>
 
     <!-- <button @click="getUsers()">Get users!</button> -->
     <div class="users-list">
@@ -27,13 +20,14 @@
 </template>
 
 <script>
-import axios from "axios";
+import store from "../store";
+// import axios from "axios";
 
 export default {
-  name: "Search",
-  str: "",
+  name: "followings",
   data() {
     return {
+      user: { username: "", followings: [] },
       users: [],
       errors: [],
       errored: false,
@@ -41,38 +35,35 @@ export default {
   },
   methods: {
     getUsers() {
-      if (this.str != "") {
+      this.user = store.state.user;
+
+      // TODO create request in the backend
+      this.user.followings.forEach((id) => {
         axios
-          .get(`http://localhost:8080/users/search/${this.str}`)
-          .then((response) => (this.users = response.data))
+          .get(`http://localhost:8080/users/${id}`)
+          .then((response) => {
+            this.users.push(response.data);
+          })
           .catch((error) => {
             console.log(error);
             this.errored = true;
           });
-      } else {
-        this.users = [];
-      }
+      });
     },
+  },
+  mounted() {
+    this.getUsers();
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.search {
+.followings {
   padding: 50px 35%;
 
   h1 {
     font-weight: 700;
     margin: 10px;
-  }
-
-  input {
-    padding: 8px;
-    margin: 20px 8px;
-  }
-
-  .search__textfield {
-    width: 200px;
   }
 
   .users-list {

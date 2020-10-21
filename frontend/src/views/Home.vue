@@ -36,7 +36,6 @@
 import store from "../store";
 import { actions } from "../store";
 import { useRoute } from "vue-router";
-import { users } from "../assets/users";
 import TweetItem from "../components/TweetItem";
 import CreateTweetPanel from "../components/CreateTweetPanel";
 

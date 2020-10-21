@@ -12,8 +12,16 @@
         >
           Admin
         </div>
-        <div class="user-profile__follower-count">
-          <h4>Following: {{ user.followings.length }}</h4>
+        <div
+          :class="{ hidden: user.id != this.$store.state.user.id }"
+          v-if="isAdmin"
+          class="user-profile__follower-count"
+        >
+          <h4>
+            <router-link to="/followings"
+              >Following: {{ user.followings.length }}</router-link
+            >
+          </h4>
         </div>
 
         <div class="user-profile__bio">
@@ -86,7 +94,6 @@
 import store from "../store";
 import { actions } from "../store";
 import { useRoute } from "vue-router";
-import { users } from "../assets/users";
 import TweetItem from "../components/TweetItem";
 import CreateTweetPanel from "../components/CreateTweetPanel";
 
