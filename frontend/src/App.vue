@@ -10,7 +10,12 @@
           <router-link to="/search">Search</router-link>
         </li>
         <li :class="{ hidden: !user }" @click="logout">Logout</li>
-        <li v-if="user">{{ user.username }}</li>
+        <li v-if="user">
+          <router-link
+            :to="{ name: 'UserProfile', params: { userId: this.user.id } }"
+            >@{{ user.username }}</router-link
+          >
+        </li>
       </ul>
     </nav>
     <router-view />

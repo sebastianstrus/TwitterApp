@@ -7,12 +7,12 @@
         <h3>{{ $route.params.userId }}</h3> -->
         <div class="user-profile__admin-badge" v-if="isAdmin">Admin</div>
         <div class="user-profile__follower-count">
-          <strong>Following: {{ user.followings.length }}</strong>
+          <h4>Following: {{ user.followings.length }}</h4>
         </div>
 
         <div class="user-profile__bio">
-          <strong>Bio:</strong>
-          <strong>{{ user.bio }}</strong>
+          <h4>Bio:</h4>
+          <h4>{{ user.bio }}</h4>
         </div>
       </div>
       <CreateTweetPanel @add-tweet="addTweet" />
@@ -66,22 +66,12 @@ export default {
           this.errored = true;
         });
     },
-    getUser() {
-      axios
-        .get(`http://localhost:8080/users/1`)
-        .then((response) => {
-          this.user = response.data;
-          this.getPostsByUserId();
-        })
-        .catch((error) => {
-          alert(error);
-          console.log(error);
-          this.errored = true;
-        });
+    setUser() {
+      this.user = store.state.user;
     },
     getPostsByUserId() {
       axios
-        .get(`http://localhost:8080/posts/user/1`)
+        .get(`http://localhost:8080/posts/user/${this.user.id}`)
         .then((response) => {
           this.posts = response.data;
           this.getFollowingsPosts();
@@ -144,7 +134,8 @@ export default {
     },
   },
   mounted() {
-    this.getUser();
+    this.setUser();
+    this.getPostsByUserId();
   },
 };
 </script>
@@ -167,6 +158,10 @@ export default {
 
     h1 {
       margin: 0;
+    }
+
+    h4 {
+      margin: 8px;
     }
 
     .user-profile__admin-badge {

@@ -13,12 +13,56 @@
           Admin
         </div>
         <div class="user-profile__follower-count">
-          <strong>Following: {{ user.followings.length }}</strong>
+          <h4>Following: {{ user.followings.length }}</h4>
         </div>
 
         <div class="user-profile__bio">
-          <strong>Bio:</strong>
-          <strong>{{ user.bio }}</strong>
+          <h4>Bio:</h4>
+          <h4>{{ user.bio }}</h4>
+        </div>
+
+        <div
+          :class="{ hidden: user.id != this.$store.state.user.id }"
+          class="edit_section"
+          v-if="isAdmin"
+        >
+          <textarea
+            v-model="bioContent"
+            name="bio"
+            id="bio_id"
+            cols="30"
+            rows="3"
+          ></textarea>
+          <button
+            id="bio_button"
+            :class="{ hidden: user.id != this.$store.state.user.id }"
+            class="user-profile__admin-btn"
+            v-if="isAdmin"
+            @click="updateBio()"
+          >
+            Update bio
+          </button>
+
+          <input
+            v-model="oldPasswordContent"
+            class="user-profile__password_field"
+            type="text"
+            placeholder="Old password"
+          />
+          <input
+            v-model="newPasswordContent"
+            class="user-profile__password_field"
+            type="text"
+            placeholder="New password"
+          />
+          <button
+            :class="{ hidden: user.id != this.$store.state.user.id }"
+            class="user-profile__admin-btn"
+            v-if="isAdmin"
+            @click="updatePassword()"
+          >
+            Update password
+          </button>
         </div>
       </div>
       <!-- <CreateTweetPanel @add-tweet="addTweet" /> -->
@@ -39,6 +83,8 @@
 
 <script>
 // import { computed } from "vue";
+import store from "../store";
+import { actions } from "../store";
 import { useRoute } from "vue-router";
 import { users } from "../assets/users";
 import TweetItem from "../components/TweetItem";
@@ -55,6 +101,9 @@ export default {
       user: { username: "", followings: [] },
       posts: "",
       errored: false,
+      bioContent: "",
+      oldPasswordContent: "",
+      newPasswordContent: "",
     };
   },
   methods: {
@@ -98,20 +147,6 @@ export default {
           this.errored = true;
         });
     },
-    // addTweet(tweet) {
-    //   axios
-    //     .post(`http://localhost:8080/posts`, {
-    //       user: this.user,
-    //       body: tweet,
-    //     })
-    //     .then((response) => {
-    //       this.posts.unshift(response.data);
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //       this.errored = true;
-    //     });
-    // },
     toDate(timestamp) {
       var date = new Date(timestamp * 1000);
       var year = date.getFullYear();
@@ -128,17 +163,48 @@ export default {
       )}:${seconds.substr(-2)}`;
       return formattedTime;
     },
+
+    updateBio() {
+      var tempUser = this.user;
+      tempUser.bio = this.bioContent;
+      axios
+        .put(`http://localhost:8080/users/${tempUser.id}`, tempUser) //TODO, remove id
+        .then((response) => {
+          store.dispatch("setUser", response.data);
+          this.bioContent = "";
+          alert("Updated!");
+        })
+        .catch((error) => {
+          console.log(error);
+          this.errored = true;
+        });
+    },
+
+    updatePassword() {
+      if (this.oldPasswordContent == this.user.password) {
+        var tempUser = this.user;
+        tempUser.password = this.newPasswordContent;
+
+        axios
+          .put(`http://localhost:8080/users/${tempUser.id}`, tempUser) //TODO, remove id
+          .then((response) => {
+            store.dispatch("setUser", response.data);
+            this.oldPasswordContent = "";
+            this.newPasswordContent = "";
+            alert("Password updated!");
+          })
+          .catch((error) => {
+            console.log(error);
+            this.errored = true;
+          });
+      } else {
+        alert("Check your password and try again.");
+      }
+    },
   },
   mounted() {
     this.getUser();
     this.getPostsByUserId();
-    //this.getUser();
-    // this.followUser();
-    // this.followUser();
-    // //this.user = users[this.$route.params.userId];
-    // console.log(this.$route.params.userId);
-    // console.log(this.$route.params);
-    // console.log(this.$route.params);
   },
 };
 </script>
@@ -163,6 +229,18 @@ export default {
       margin: 0;
     }
 
+    h4 {
+      margin: 8px;
+    }
+
+    #bio_button {
+      margin-bottom: 80px;
+    }
+    .user-profile__password_field {
+      width: 160px;
+      margin: 8px;
+    }
+
     .user-profile__admin-badge {
       background: #693250;
       color: white;
@@ -170,6 +248,11 @@ export default {
       margin-right: auto;
       padding: 0 10px;
       font-weight: bold;
+    }
+
+    .user-profile__admin-btn {
+      margin: 8px;
+      width: 160px;
     }
   }
 

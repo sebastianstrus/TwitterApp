@@ -23,6 +23,9 @@
 </template>
 
 <script>
+import store from "../store";
+import { actions } from "../store";
+import { useRoute } from "vue-router";
 export default {
   name: "registration",
   data() {
@@ -46,17 +49,11 @@ export default {
             password: this.password,
           })
           .then((response) => {
-            alert(
-              "Response.data: " +
-                response.data.id +
-                " " +
-                response.data.username +
-                " " +
-                response.data.password
-            );
+            store.dispatch("setUser", response.data);
+            this.$router.push({ path: "/" });
           })
           .catch((error) => {
-            alert("Something went wrong");
+            alert("Something went wrong.");
             this.errored = true;
           });
       }
