@@ -9,7 +9,10 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: {
+      requiresAdmin: true
+    }
   },
   {
     path: '/login',
@@ -24,18 +27,33 @@ const routes = [
   {
     path: '/user/:userId',
     name: 'UserProfile',
-    component: UserProfile
+    component: UserProfile,
+    meta: {
+      requiresAdmin: true
+    }
   },
   {
     path: '/search',
     name: 'Search',
-    component: Search
+    component: Search,
+    meta: {
+      requiresAdmin: true
+    }
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(),
   routes
+})
+
+router.beforeEach(async (to, from, next) => {
+  const isAdmin = false;
+  const requiresAdmin = to.matched.some(record => record.meta.requiresAdmin);
+
+  if (requiresAdmin && !isAdmin) next({ name: 'login' })
+  else next();
+
 })
 
 export default router
