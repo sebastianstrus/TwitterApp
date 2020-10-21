@@ -2,16 +2,17 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    user: {
-      "id": 1,
-      "username": "Sebastian1",
-      "password": "Password1",
-      "followings": [
-        3,
-        5
-      ],
-      "bio": "I have a bio 1"
-    },
+    user: null
+    // user: {
+    //   "id": 1,
+    //   "username": "Sebastian1",
+    //   "password": "Password1",
+    //   "followings": [
+    //     3,
+    //     5
+    //   ],
+    //   "bio": "I have a bio 1"
+    // },
 
   },
 
@@ -19,6 +20,9 @@ export default createStore({
   mutations: {
     SET_USER(state, user) {
       state.user = user;
+    },
+    UNSET_USER() {
+      state.user = null;
     }
 
   },
@@ -27,6 +31,10 @@ export default createStore({
   actions: {
     setUser({ commit }, user) {
       commit('SET_USER', user);
+
+    },
+    unsetUser({ commit }) {
+      commit('UNSET_USER');
 
     }
 

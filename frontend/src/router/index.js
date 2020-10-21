@@ -12,25 +12,32 @@ const routes = [
     name: 'Home',
     component: Home,
     meta: {
-      requiresAdmin: true
+      requiresUser: true
     }
   },
   {
     path: '/login',
     name: 'login',
-    component: LogIn
+    component: LogIn,
+    meta: {
+      requiresUser: false
+    }
+
   },
   {
     path: '/registration',
     name: 'registration',
-    component: Registration
+    component: Registration,
+    meta: {
+      requiresUser: false
+    }
   },
   {
     path: '/user/:userId',
     name: 'UserProfile',
     component: UserProfile,
     meta: {
-      requiresAdmin: true
+      requiresUser: true
     }
   },
   {
@@ -38,7 +45,7 @@ const routes = [
     name: 'Search',
     component: Search,
     meta: {
-      requiresAdmin: true
+      requiresUser: true
     }
   }
 ]
@@ -50,22 +57,22 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const user = store.state.user;
-  if (!user) {
-    await store.dispach('setUser', {
-      "id": 1,
-      "username": "Sebastian1",
-      "password": "Password1",
-      "followings": [
-        3,
-        5
-      ],
-      "bio": "I have a bio 1"
-    })
-  }
-  const isAdmin = true;
-  const requiresAdmin = to.matched.some(record => record.meta.requiresAdmin);
+  // if (!user) {
+  //   await store.dispatch('setUser', {
+  //     "id": 1,
+  //     "username": "Sebastian1",
+  //     "password": "Password1",
+  //     "followings": [
+  //       3,
+  //       5
+  //     ],
+  //     "bio": "I have a bio 1"
+  //   })
+  // }
 
-  if (requiresAdmin && !isAdmin) next({ name: 'login' })
+
+  const requiresUser = to.matched.some(record => record.meta.requiresUser);
+  if (requiresUser && (user == null)) next({ name: 'login' })
   else next();
 
 })

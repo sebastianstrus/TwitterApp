@@ -9,7 +9,7 @@
         <li class="hidden">
           <router-link to="/search">Search</router-link>
         </li>
-        <li class="hidden"><router-link to="/login">Logout</router-link></li>
+        <li class="hidden" @click="logout">Logout</li>
         <li v-if="user">{{ user.username }}</li>
         <!-- <li>{{ state.user.username }}</li> -->
       </ul>
@@ -21,6 +21,7 @@
 
 
 <script>
+import { reactive } from "vue";
 import { useStore } from "vuex";
 import { computed } from "vue";
 
@@ -32,6 +33,13 @@ export default {
     return {
       user,
     };
+  },
+  methods: {
+    logout() {
+      alert("test");
+      //await store.dispatch('unsetUser');
+      //router.push({ path: "/login" });
+    },
   },
 };
 </script>
