@@ -5,7 +5,13 @@
         <h1 class="user-profile__username">@{{ user.username }}</h1>
         <!-- <h2>Ueser id: {{ user.id }}</h2>
         <h3>{{ $route.params.userId }}</h3> -->
-        <div class="user-profile__admin-badge" v-if="isAdmin">Admin</div>
+        <div
+          :class="{ hidden: user.id != this.$store.state.user.id }"
+          class="user-profile__admin-badge"
+          v-if="isAdmin"
+        >
+          Admin
+        </div>
         <div class="user-profile__follower-count">
           <strong>Following: {{ user.followings.length }}</strong>
         </div>
@@ -15,7 +21,7 @@
           <strong>{{ user.bio }}</strong>
         </div>
       </div>
-      <CreateTweetPanel @add-tweet="addTweet" />
+      <!-- <CreateTweetPanel @add-tweet="addTweet" /> -->
     </div>
     <div class="user-profile__tweets-wrapper">
       <TweetItem
@@ -80,26 +86,32 @@ export default {
     getPostsByUserId() {
       axios
         .get(`http://localhost:8080/posts/user/${this.$route.params.userId}`)
-        .then((response) => (this.posts = response.data))
-        .catch((error) => {
-          console.log(error);
-          this.errored = true;
-        });
-    },
-    addTweet(tweet) {
-      axios
-        .post(`http://localhost:8080/posts`, {
-          user: this.user,
-          body: tweet,
-        })
         .then((response) => {
-          this.posts.unshift(response.data);
+          this.posts = response.data;
+          // Sort posts, TODO: move do backend
+          this.posts.sort(function (a, b) {
+            return b.timestamp - a.timestamp;
+          });
         })
         .catch((error) => {
           console.log(error);
           this.errored = true;
         });
     },
+    // addTweet(tweet) {
+    //   axios
+    //     .post(`http://localhost:8080/posts`, {
+    //       user: this.user,
+    //       body: tweet,
+    //     })
+    //     .then((response) => {
+    //       this.posts.unshift(response.data);
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //       this.errored = true;
+    //     });
+    // },
     toDate(timestamp) {
       var date = new Date(timestamp * 1000);
       var year = date.getFullYear();
@@ -166,5 +178,9 @@ export default {
     grid-gap: 10px;
     margin-bottom: auto;
   }
+}
+
+.hidden {
+  display: none;
 }
 </style>

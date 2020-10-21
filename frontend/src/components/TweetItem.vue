@@ -8,7 +8,11 @@
       <div class="tweet-item__content">
         {{ body }}
       </div>
-      <div class="tweet-item__delete" @click="deleteTweet(tweet.id)">
+      <div
+        :class="{ hidden: tweet.user.id != this.$store.state.user.id }"
+        class="tweet-item__delete"
+        @click="deleteTweet(tweet.id)"
+      >
         Delete
       </div>
     </div>
@@ -16,6 +20,7 @@
 </template>
 
 <script>
+import store from "../store";
 export default {
   name: "TweetItem",
   props: {
@@ -54,6 +59,10 @@ export default {
   box-sizing: border-box;
   cursor: pointer;
   transition: all 0.25s ease;
+
+  .hidden {
+    display: none;
+  }
 
   .tweet-item__username {
     display: inline;

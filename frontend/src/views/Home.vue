@@ -101,7 +101,7 @@ export default {
             newPosts.forEach((element) => {
               this.posts.push(element);
             });
-            // sort posts
+            // Sort posts, TODO: move do backend
             this.posts.sort(function (a, b) {
               return b.timestamp - a.timestamp;
             });
