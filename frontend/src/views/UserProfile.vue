@@ -12,6 +12,16 @@
         >
           Admin
         </div>
+
+        <button
+          id="following_btn"
+          @click="toggleFollowing()"
+          :class="{ hidden: user.id == this.$store.state.user.id }"
+          v-if="isAdmin"
+        >
+          {{ isFollowing ? "Unfollow" : "Follow" }}
+        </button>
+
         <div
           :class="{ hidden: user.id != this.$store.state.user.id }"
           v-if="isAdmin"
@@ -111,6 +121,7 @@ export default {
       bioContent: "",
       oldPasswordContent: "",
       newPasswordContent: "",
+      isFollowing: false,
     };
   },
   methods: {
@@ -132,6 +143,7 @@ export default {
         .get(`http://localhost:8080/users/${this.$route.params.userId}`)
         .then((response) => {
           this.user = response.data;
+          this.checkIfIsFollowing();
         })
         .catch((error) => {
           alert(error);
@@ -208,6 +220,30 @@ export default {
         alert("Check your password and try again.");
       }
     },
+    toggleFollowing() {
+      var tempUser = store.state.user;
+      if (this.isFollowing) {
+        const index = tempUser.followings.indexOf(this.user.id);
+        if (index > -1) {
+          tempUser.followings.splice(index, 1);
+        }
+      } else {
+        tempUser.followings.push(this.user.id);
+      }
+      axios
+        .put(`http://localhost:8080/users/${tempUser.id}`, tempUser) //TODO, remove id
+        .then((response) => {
+          store.dispatch("setUser", response.data);
+          this.checkIfIsFollowing();
+        })
+        .catch((error) => {
+          console.log(error);
+          this.errored = true;
+        });
+    },
+    checkIfIsFollowing() {
+      this.isFollowing = store.state.user.followings.includes(this.user.id);
+    },
   },
   mounted() {
     this.getUser();
@@ -231,6 +267,10 @@ export default {
     border-radius: 5px;
     border: 1px solid #dfe3e8;
     margin-bottom: auto;
+
+    #following_btn {
+      width: 80px;
+    }
 
     h1 {
       margin: 0;
