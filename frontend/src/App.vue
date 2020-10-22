@@ -83,6 +83,10 @@ export default {
         display: inline;
         margin: 20px;
       }
+      li:hover {
+        color: #dddddd;
+        cursor: pointer;
+      }
     }
 
     .hidden {
