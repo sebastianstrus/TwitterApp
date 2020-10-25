@@ -33,6 +33,7 @@
 
 <script>
 import store from "../store";
+import axios from "axios";
 import TweetItem from "../components/TweetItem";
 import CreateTweetPanel from "../components/CreateTweetPanel";
 
