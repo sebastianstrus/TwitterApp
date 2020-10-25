@@ -1,30 +1,54 @@
 <template>
   <div id="app">
     <nav>
-      <router-link to="/login">
+      <router-link to="/">
         <div class="navigation__logo">Twitter</div>
       </router-link>
 
-      <div class="navigation__user">
-        {{ user.username }}
-      </div>
+      <ul class="navigation__lists">
+        <li :class="{ hidden: !user }">
+          <router-link to="/search">Search</router-link>
+        </li>
+        <li :class="{ hidden: !user }" @click="logout">Logout</li>
+        <li v-if="user">
+          <router-link
+            :key="$route.fullPath"
+            :to="{ name: 'UserProfile', params: { userId: this.user.id } }"
+            >@{{ user.username }}</router-link
+          >
+        </li>
+      </ul>
     </nav>
     <router-view />
   </div>
 </template>
 
+
+
 <script>
+import { useStore } from "vuex";
+import { computed } from "vue";
+
 export default {
   name: "App",
-  data() {
+  setup() {
+    const store = useStore();
+    const user = computed(() => store.state.user);
     return {
-      user: {
-        username: "_SebastianStrus",
-      },
+      user,
+      store,
     };
+  },
+  methods: {
+    logout() {
+      this.store.dispatch("setUser", null);
+      this.$router.push({ path: "/login" });
+    },
   },
 };
 </script>
+
+
 
 <style lang="scss">
 #app {
@@ -36,20 +60,35 @@ export default {
   background-color: #f3f5fa;
 
   nav {
-    display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 10px 5%;
     background-color: #693250;
     color: white;
+    font-weight: bold;
 
     .navigation__logo {
-      font-weight: bold;
+      display: inline-block;
       font-size: 24px;
+      width: 100px;
     }
 
-    .navigation__user {
-      font-weight: bold;
+    ul {
+      margin: 10px 0;
+      float: right;
+      list-style: none;
+      li {
+        align-items: center;
+        display: inline;
+        margin: 20px;
+      }
+      li:hover {
+        color: #dddddd;
+        cursor: pointer;
+      }
+    }
+
+    .hidden {
+      display: none;
     }
   }
 }

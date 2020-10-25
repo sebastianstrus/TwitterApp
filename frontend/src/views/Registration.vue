@@ -5,11 +5,11 @@
         <h2>Sign up</h2>
       </div>
       <div class="registration-container__form">
-        <form>
+        <form @submit.prevent="signupTapped">
           <label for="fname">Username:</label><br />
-          <input type="text" id="fname" name="fname" /><br />
+          <input type="text" id="fname" name="fname" v-model="username" /><br />
           <label for="lname">Password:</label><br />
-          <input type="text" id="lname" name="lname" />
+          <input type="text" id="lname" name="lname" v-model="password" />
           <h6>
             Already have an account?
 
@@ -23,8 +23,42 @@
 </template>
 
 <script>
+import store from "../store";
+import { actions } from "../store";
+import { useRoute } from "vue-router";
 export default {
   name: "registration",
+  data() {
+    return {
+      username: "",
+      password: "",
+      errored: false,
+    };
+  },
+  methods: {
+    signupTapped() {
+      if (
+        this.username &&
+        this.username != "" &&
+        this.password &&
+        this.password != ""
+      ) {
+        axios
+          .post("http://localhost:8080/users", {
+            username: this.username,
+            password: this.password,
+          })
+          .then((response) => {
+            store.dispatch("setUser", response.data);
+            this.$router.push({ path: "/" });
+          })
+          .catch((error) => {
+            alert("Something went wrong.");
+            this.errored = true;
+          });
+      }
+    },
+  },
 };
 </script>
 

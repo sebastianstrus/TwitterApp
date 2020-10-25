@@ -21,19 +21,34 @@ public class UserService {
         return users;
     }
 
-    public Optional<User> getUser(String id) {
+    public Optional<User> getUser(Integer id) {
         return userRepository.findById(id);
+    }
+
+    public List<User> findByUsernameContainingIgnoreCase(String str) {
+        List<User> users = new ArrayList<>();
+        userRepository.findAll().forEach( (user) -> {
+            if (user.getUsername().toLowerCase().contains(str.toLowerCase()))  {
+                users.add(user);
+            }
+        });
+        return users;
     }
 
     public void addUser(User user) {
         userRepository.save(user);
     }
 
-    public void updateUser(String id, User user) {
+
+    public void updateUser(Integer id, User user) {
         userRepository.save(user);
     }
 
-    public void deleteUser(String id) {
+    public void deleteUser(Integer id) {
         userRepository.deleteById(id);
+    }
+
+    public List<User> getUsersByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }

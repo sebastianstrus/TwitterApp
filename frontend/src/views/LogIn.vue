@@ -2,20 +2,20 @@
   <div class="login">
     <div class="login-container">
       <div class="login-container__header">
-        <h2>Log in</h2>
+        <h2>Log in {{ user.username }}</h2>
       </div>
       <div class="login-container__form">
-        <form>
+        <form @submit.prevent="loginTapped">
           <label for="fname">Username:</label><br />
-          <input type="text" id="fname" name="fname" /><br />
+          <input type="text" id="fname" name="fname" v-model="username" /><br />
           <label for="lname">Password:</label><br />
-          <input type="text" id="lname" name="lname" />
+          <input type="text" id="lname" name="lname" v-model="password" />
           <h6>
             Don't have an account?
 
             <router-link to="/registration"> Sign up. </router-link>
           </h6>
-          <button>Log In</button>
+          <button>Log in</button>
         </form>
       </div>
     </div>
@@ -23,8 +23,49 @@
 </template>
 
 <script>
+import store from "../store";
+import { actions } from "../store";
+import { useRoute } from "vue-router";
 export default {
+  data() {
+    return {
+      user: "",
+      username: "",
+      password: "",
+      errors: [],
+      errored: false,
+    };
+  },
   name: "login",
+  methods: {
+    loginTapped() {
+      if (
+        this.username &&
+        this.username != "" &&
+        this.password &&
+        this.password != ""
+      ) {
+        axios
+          .get(`http://localhost:8080/users/username/${this.username}`)
+          .then((response) => {
+            if (response.data[0].password == this.password) {
+              const user = store.state.user;
+              if (!user) {
+                store.dispatch("setUser", response.data[0]);
+                this.$router.push({ path: "/" });
+              }
+            } else {
+              alert("Check your credentials!");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            alert("Check your credentials!!");
+            this.errored = true;
+          });
+      }
+    },
+  },
 };
 </script>
 

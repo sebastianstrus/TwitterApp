@@ -11,7 +11,6 @@ import java.util.Optional;
 @RestController
 public class UserController {
 
-
     @Autowired
     private UserService userService;
 
@@ -21,28 +20,41 @@ public class UserController {
 
     }
 
-    @RequestMapping(value="/welcomee")
-    public static String welcome() {
-        return "Welcome to Spring Boot e";
+    @RequestMapping(value="/hello")
+    public String getHEllo() {
+        return "Hello my friend!";
+
     }
 
     @RequestMapping(value = "/users/{id}")
-    public Optional<User> getUser(@PathVariable String id) {
+    public Optional<User> getUser(@PathVariable Integer id) {
         return userService.getUser(id);
     }
 
+    @RequestMapping(value = "/users/username/{username}")
+    public List<User> getUsersByUsername(@PathVariable String username) {
+        return userService.getUsersByUsername(username);
+    }
+
+    @RequestMapping(value = "/users/search/{str}")
+    public List<User> findByUsernameContainingIgnoreCase(@PathVariable String str) {
+        return userService.findByUsernameContainingIgnoreCase(str);
+    }
+
     @RequestMapping(method= RequestMethod.POST, value="/users")
-    public void addUser(@RequestBody User user) {
+    public Optional<User> addUser(@RequestBody User user) {
         userService.addUser(user);
+        return userService.getUser(user.getId());// TODO: update to void
     }
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.PUT)
-    public void updateUser(@RequestBody User user, @PathVariable String id) {
+    public Optional<User> updateUser(@RequestBody User user, @PathVariable Integer id) {
         userService.updateUser(id, user);
+        return userService.getUser(id);
     }
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
-    public void deleteUser(@PathVariable String id) {
+    public void deleteUser(@PathVariable Integer id) {
         userService.deleteUser(id);
     }
 }

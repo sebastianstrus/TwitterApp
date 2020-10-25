@@ -1,40 +1,45 @@
 package com.backend.post;
 
 import com.backend.user.User;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Post {
 
     @Id
-    private String id;
-    private String postdate;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    private Integer timestamp = (int)((new Date()).getTime() / 1000); // TODO: move to constructor?
+    @ManyToOne
     private User user;
-    private String details;
+    private String body;
 
-    public Post(String id, String postdate, User user, String details) {
+    //empty constructor
+    public Post() {}
+
+    public Post(Integer id, Integer timestamp, User user, String body) {
         this.id = id;
-        this.postdate = postdate;
+        this.timestamp = timestamp;
         this.user = user;
-        this.details = details;
+        this.body = body;
     }
 
-    public String getId() {
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getPostdate() {
-        return postdate;
+    public Integer getTimestamp() {
+        return timestamp;
     }
 
-    public void setPostdate(String postdate) {
-        this.postdate = postdate;
+    public void setTimestamp(Integer timestamp) {
+        this.timestamp = timestamp;
     }
 
     public User getUser() {
@@ -45,11 +50,11 @@ public class Post {
         this.user = user;
     }
 
-    public String getDetails() {
-        return details;
+    public String getBody() {
+        return body;
     }
 
-    public void setDetails(String details) {
-        this.details = details;
+    public void setBody(String body) {
+        this.body = body;
     }
 }

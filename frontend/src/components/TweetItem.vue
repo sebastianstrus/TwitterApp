@@ -1,19 +1,38 @@
 <template>
-  <div class="tweet-item" @click="favouriteTweet(tweet.id)">
+  <div class="tweet-item">
     <div class="user-profile__tweet">
-      <div class="tweet-item__user">@{{ username }}</div>
+      <div>
+        <div class="tweet-item__username">@{{ username }}</div>
+        <div class="tweet-item__date">{{ timestamp }}</div>
+      </div>
       <div class="tweet-item__content">
-        {{ tweet.content }}
+        {{ body }}
+      </div>
+      <div
+        :class="{ hidden: tweet.user.id != this.$store.state.user.id }"
+        class="tweet-item__delete"
+        @click="deleteTweet(tweet.id)"
+      >
+        Delete
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import store from "../store";
 export default {
   name: "TweetItem",
   props: {
     username: {
+      type: String,
+      required: true,
+    },
+    body: {
+      type: String,
+      required: true,
+    },
+    timestamp: {
       type: String,
       required: true,
     },
@@ -23,9 +42,8 @@ export default {
     },
   },
   methods: {
-    favouriteTweet(id) {
-      this.$emit("favourite", id);
-      //TODO: say to the API: I like/unlike this tweet (change the function later))
+    deleteTweet(id) {
+      this.$emit("delete", id);
     },
   },
 };
@@ -33,6 +51,7 @@ export default {
 
 <style lang="scss" scoped>
 .tweet-item {
+  display: inline;
   padding: 20px;
   background-color: white;
   border-radius: 5px;
@@ -41,8 +60,37 @@ export default {
   cursor: pointer;
   transition: all 0.25s ease;
 
-  .tweet-item__user {
+  .hidden {
+    display: none;
+  }
+
+  .tweet-item__username {
+    display: inline;
     font-weight: bold;
+  }
+
+  .tweet-item__date {
+    display: inline;
+    font-weight: bold;
+    color: #693250;
+    float: right;
+  }
+
+  .tweet-item__content {
+    display: inline;
+  }
+
+  .tweet-item__delete {
+    font-size: 12px;
+    padding: 1px;
+    font-weight: 600;
+    float: right;
+    margin: 5px;
+    border-radius: 5px;
+    background-color: #693250;
+    color: white;
+    width: 50px;
+    text-align: center;
   }
 
   &:hover {
