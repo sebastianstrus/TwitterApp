@@ -6,7 +6,7 @@ module.exports = {
             }
         }
     },
-    devServer: {
-        proxy: 'https://localhost:1337'
-    }
+    // devServer: {
+    //     proxy: 'https://localhost:1337'
+    // }
 }

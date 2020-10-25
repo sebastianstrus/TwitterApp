@@ -102,16 +102,14 @@
 <script>
 // import { computed } from "vue";
 import store from "../store";
-import { actions } from "../store";
-import { useRoute } from "vue-router";
+import axios from "axios";
 import TweetItem from "../components/TweetItem";
-import CreateTweetPanel from "../components/CreateTweetPanel";
 
 export default {
   name: "UserProfile",
 
-  components: { CreateTweetPanel, TweetItem },
-  //beforeCreated() {},
+  components: { TweetItem },
+  //beforeCreated() {},beforeRouteUpdate
   data() {
     return {
       isAdmin: true,
@@ -128,7 +126,7 @@ export default {
     deleteTweet(id) {
       axios
         .delete(`http://localhost:8080/posts/${id}`)
-        .then((response) => {
+        .then(() => {
           // TODO: simplyfy
           this.getPostsByUserId();
         })
@@ -248,6 +246,10 @@ export default {
   mounted() {
     this.getUser();
     this.getPostsByUserId();
+  },
+  beforeRouteUpdate() {
+    // workaround, TODO: try to get set user here.
+    this.$router.push({ path: "/" });
   },
 };
 </script>

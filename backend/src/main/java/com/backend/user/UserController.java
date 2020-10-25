@@ -20,6 +20,12 @@ public class UserController {
 
     }
 
+    @RequestMapping(value="/hello")
+    public String getHEllo() {
+        return "Hello my friend!";
+
+    }
+
     @RequestMapping(value = "/users/{id}")
     public Optional<User> getUser(@PathVariable Integer id) {
         return userService.getUser(id);

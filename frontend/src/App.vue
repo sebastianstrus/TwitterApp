@@ -12,6 +12,7 @@
         <li :class="{ hidden: !user }" @click="logout">Logout</li>
         <li v-if="user">
           <router-link
+            :key="$route.fullPath"
             :to="{ name: 'UserProfile', params: { userId: this.user.id } }"
             >@{{ user.username }}</router-link
           >
@@ -25,11 +26,8 @@
 
 
 <script>
-import { actions } from "vuex";
-import { reactive } from "vue";
 import { useStore } from "vuex";
 import { computed } from "vue";
-import { useRoute } from "vue-router";
 
 export default {
   name: "App",
