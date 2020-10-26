@@ -125,7 +125,7 @@ export default {
   methods: {
     deleteTweet(id) {
       axios
-        .delete(`http://localhost:8080/posts/${id}`)
+        .delete(`posts/${id}`)
         .then(() => {
           // TODO: simplyfy
           this.getPostsByUserId();
@@ -138,7 +138,7 @@ export default {
     },
     getUser() {
       axios
-        .get(`http://localhost:8080/users/${this.$route.params.userId}`)
+        .get(`users/${this.$route.params.userId}`)
         .then((response) => {
           this.user = response.data;
           this.checkIfIsFollowing();
@@ -151,7 +151,7 @@ export default {
     },
     getPostsByUserId() {
       axios
-        .get(`http://localhost:8080/posts/user/${this.$route.params.userId}`)
+        .get(`posts/user/${this.$route.params.userId}`)
         .then((response) => {
           this.posts = response.data;
           // Sort posts, TODO: move do backend
@@ -185,7 +185,7 @@ export default {
       var tempUser = this.user;
       tempUser.bio = this.bioContent;
       axios
-        .put(`http://localhost:8080/users/${tempUser.id}`, tempUser) //TODO, remove id
+        .put(`users/${tempUser.id}`, tempUser) //TODO, remove id
         .then((response) => {
           store.dispatch("setUser", response.data);
           this.bioContent = "";
@@ -203,7 +203,7 @@ export default {
         tempUser.password = this.newPasswordContent;
 
         axios
-          .put(`http://localhost:8080/users/${tempUser.id}`, tempUser) //TODO, remove id
+          .put(`users/${tempUser.id}`, tempUser) //TODO, remove id
           .then((response) => {
             store.dispatch("setUser", response.data);
             this.oldPasswordContent = "";
@@ -229,7 +229,7 @@ export default {
         tempUser.followings.push(this.user.id);
       }
       axios
-        .put(`http://localhost:8080/users/${tempUser.id}`, tempUser) //TODO, remove id
+        .put(`users/${tempUser.id}`, tempUser) //TODO, remove id
         .then((response) => {
           store.dispatch("setUser", response.data);
           this.checkIfIsFollowing();

@@ -52,7 +52,7 @@ export default {
   methods: {
     deleteTweet(id) {
       axios
-        .delete(`http://localhost:8080/posts/${id}`)
+        .delete(`posts/${id}`)
         .then(() => {
           this.getPostsByUserId();
         })
@@ -67,9 +67,11 @@ export default {
     },
     getPostsByUserId() {
       axios
-        .get(`http://localhost:8080/posts/user/${this.user.id}`)
+        .get(`posts/user/${this.user.id}`)
         .then((response) => {
           this.posts = response.data;
+          // Sort posts, TODO: move do backend
+          this.sortPosts();
           this.getFollowingsPosts();
         })
         .catch((error) => {
@@ -81,16 +83,14 @@ export default {
     getFollowingsPosts() {
       this.user.followings.forEach((id) => {
         axios
-          .get(`http://localhost:8080/posts/user/${id}`)
+          .get(`posts/user/${id}`)
           .then((response) => {
             var newPosts = response.data;
             newPosts.forEach((element) => {
               this.posts.push(element);
             });
             // Sort posts, TODO: move do backend
-            this.posts.sort(function (a, b) {
-              return b.timestamp - a.timestamp;
-            });
+            this.sortPosts();
           })
           .catch((error) => {
             console.log(error);
@@ -100,7 +100,7 @@ export default {
     },
     addTweet(tweet) {
       axios
-        .post(`http://localhost:8080/posts`, {
+        .post(`posts`, {
           user: this.user,
           body: tweet,
         })
@@ -127,6 +127,11 @@ export default {
         -2
       )}:${seconds.substr(-2)}`;
       return formattedTime;
+    },
+    sortPosts() {
+      this.posts.sort(function (a, b) {
+        return b.timestamp - a.timestamp;
+      });
     },
   },
   mounted() {

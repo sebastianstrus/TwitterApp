@@ -3,16 +3,6 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     user: null
-    // user: {
-    //   "id": 1,
-    //   "username": "Sebastian1",
-    //   "password": "Password1",
-    //   "followings": [
-    //     3,
-    //     5
-    //   ],
-    //   "bio": "I have a bio 1"
-    // },
 
   },
 

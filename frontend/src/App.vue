@@ -7,6 +7,9 @@
 
       <ul class="navigation__lists">
         <li :class="{ hidden: !user }">
+          <router-link to="/">Home</router-link>
+        </li>
+        <li :class="{ hidden: !user }">
           <router-link to="/search">Search</router-link>
         </li>
         <li :class="{ hidden: !user }" @click="logout">Logout</li>

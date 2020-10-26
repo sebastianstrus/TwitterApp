@@ -1,8 +1,6 @@
 <template>
   <div class="followings">
     <h1>Followings</h1>
-
-    <!-- <button @click="getUsers()">Get users!</button> -->
     <div class="users-list">
       <router-link
         v-for="user in users"
@@ -14,14 +12,12 @@
         </div>
       </router-link>
     </div>
-
-    <!-- <div>{{ users }}</div> -->
   </div>
 </template>
 
 <script>
 import store from "../store";
-// import axios from "axios";
+import axios from "axios";
 
 export default {
   name: "followings",
@@ -40,7 +36,7 @@ export default {
       // TODO create request in the backend
       this.user.followings.forEach((id) => {
         axios
-          .get(`http://localhost:8080/users/${id}`)
+          .get(`users/${id}`)
           .then((response) => {
             this.users.push(response.data);
           })

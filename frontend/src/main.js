@@ -2,7 +2,8 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import axios from 'axios'
 
-window.axios = require('axios');
+axios.defaults.baseURL = 'http://ec2-13-49-221-202.eu-north-1.compute.amazonaws.com:8080'
 
 createApp(App).use(store).use(router).mount('#app')

@@ -5,11 +5,31 @@
         <h2>Sign up</h2>
       </div>
       <div class="registration-container__form">
+        <h6 :class="{ '--hidden': !errored }" class="error__message">
+          Check your credentials.
+        </h6>
         <form @submit.prevent="signupTapped">
-          <label for="fname">Username:</label><br />
-          <input type="text" id="fname" name="fname" v-model="username" /><br />
-          <label for="lname">Password:</label><br />
-          <input type="text" id="lname" name="lname" v-model="password" />
+          <label for="username">Username:</label><br />
+          <input
+            type="text"
+            id="username"
+            name="username"
+            v-model="username"
+          /><br />
+          <label for="password">Password:</label><br />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            v-model="password"
+          />
+          <label for="password2">Repeat password:</label><br />
+          <input
+            type="password"
+            id="password2"
+            name="password2"
+            v-model="password2"
+          />
           <h6>
             Already have an account?
 
@@ -24,14 +44,14 @@
 
 <script>
 import store from "../store";
-import { actions } from "../store";
-import { useRoute } from "vue-router";
+import axios from "axios";
 export default {
   name: "registration",
   data() {
     return {
       username: "",
       password: "",
+      password2: "",
       errored: false,
     };
   },
@@ -41,10 +61,11 @@ export default {
         this.username &&
         this.username != "" &&
         this.password &&
-        this.password != ""
+        this.password != "" &&
+        this.password === this.password2
       ) {
         axios
-          .post("http://localhost:8080/users", {
+          .post("users", {
             username: this.username,
             password: this.password,
           })
@@ -53,9 +74,12 @@ export default {
             this.$router.push({ path: "/" });
           })
           .catch((error) => {
+            console.log(error);
             alert("Something went wrong.");
             this.errored = true;
           });
+      } else {
+        this.errored = true;
       }
     },
   },
@@ -69,8 +93,8 @@ export default {
     padding: 0px;
     border: 1px solid black;
     width: 300px;
-    height: 240px;
-    margin: 100px auto;
+    height: 300px;
+    margin: 85px auto;
     border-radius: 10px;
     overflow: hidden;
 
@@ -82,9 +106,19 @@ export default {
     }
 
     .registration-container__form {
+      padding-top: 10px;
       width: 200px;
       height: 100px;
       margin: auto;
+    }
+    .error__message {
+      position: absolute;
+      float: center;
+      color: red;
+      margin: -20px 0 0 0;
+    }
+    .--hidden {
+      display: none;
     }
     form {
       display: block;

@@ -43,7 +43,7 @@ export default {
     getUsers() {
       if (this.str != "") {
         axios
-          .get(`http://localhost:8080/users/search/${this.str}`)
+          .get(`users/search/${this.str}`)
           .then((response) => (this.users = response.data))
           .catch((error) => {
             console.log(error);

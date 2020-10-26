@@ -5,11 +5,14 @@
         <h2>Log in {{ user.username }}</h2>
       </div>
       <div class="login-container__form">
+        <h6 :class="{ '--hidden': !errored }" class="error__message">
+          Check your credentials.
+        </h6>
         <form @submit.prevent="loginTapped">
           <label for="fname">Username:</label><br />
           <input type="text" id="fname" name="fname" v-model="username" /><br />
           <label for="lname">Password:</label><br />
-          <input type="text" id="lname" name="lname" v-model="password" />
+          <input type="password" id="lname" name="lname" v-model="password" />
           <h6>
             Don't have an account?
 
@@ -24,8 +27,7 @@
 
 <script>
 import store from "../store";
-import { actions } from "../store";
-import { useRoute } from "vue-router";
+import axios from "axios";
 export default {
   data() {
     return {
@@ -46,7 +48,7 @@ export default {
         this.password != ""
       ) {
         axios
-          .get(`http://localhost:8080/users/username/${this.username}`)
+          .get(`users/username/${this.username}`)
           .then((response) => {
             if (response.data[0].password == this.password) {
               const user = store.state.user;
@@ -55,14 +57,15 @@ export default {
                 this.$router.push({ path: "/" });
               }
             } else {
-              alert("Check your credentials!");
+              this.errored = true;
             }
           })
           .catch((error) => {
             console.log(error);
-            alert("Check your credentials!!");
             this.errored = true;
           });
+      } else {
+        this.errored = true;
       }
     },
   },
@@ -73,11 +76,10 @@ export default {
 .login {
   padding: 50px 5%;
   .login-container {
-    padding: 0px;
     border: 1px solid black;
     width: 300px;
-    height: 240px;
-    margin: 100px auto;
+    height: 250px;
+    margin: 110px auto;
     border-radius: 10px;
     overflow: hidden;
 
@@ -89,9 +91,19 @@ export default {
     }
 
     .login-container__form {
+      padding-top: 10px;
       width: 200px;
       height: 100px;
       margin: auto;
+      .error__message {
+        position: absolute;
+        float: center;
+        color: red;
+        margin: -20px 0 0 0;
+      }
+      .--hidden {
+        display: none;
+      }
     }
     form {
       display: block;
