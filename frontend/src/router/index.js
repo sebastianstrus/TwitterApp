@@ -66,20 +66,6 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const user = store.state.user;
-  // if (!user) {
-  //   await store.dispatch('setUser', {
-  //     "id": 1,
-  //     "username": "Sebastian1",
-  //     "password": "Password1",
-  //     "followings": [
-  //       3,
-  //       5
-  //     ],
-  //     "bio": "I have a bio 1"
-  //   })
-  // }
-
-
   const requiresUser = to.matched.some(record => record.meta.requiresUser);
   if (requiresUser && (user == null)) next({ name: 'login' })
   else next();
